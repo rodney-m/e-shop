@@ -15,11 +15,20 @@ app.options('*', cors() )
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(authJwt());
-app.use(function (err, req, res, next)  {
-    if(err){
-        res.status(500).json({message: "error in the server"})
+app.use(function(err, req, res, next){
+    if(err.name === 'UnauthorizedError'){
+        // jwt authentication error
+        return res.status(401).json({message: "The user is not authorized"})
     }
-})
+
+    if(err.name === 'ValidationError'){
+        // validation error 
+        return res.status(401).json({message: err})
+    }
+
+    // default to 500 server error
+    return res.status(500).json(err)
+});
 
 
 //Routes
@@ -27,7 +36,6 @@ const productsRoutes = require('./routes/products');
 const categoriesRoutes = require('./routes/categories');
 const usersRoutes = require('./routes/users');
 const ordersRoutes = require('./routes/orders');
-const res = require('express/lib/response');
 
 const api = process.env.API_URL;
 
