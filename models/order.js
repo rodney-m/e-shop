@@ -48,7 +48,7 @@ const orderSchema = mongoose.Schema({
 })
 
 orderSchema.virtual('id').get(function() {
-    return this.id.toHexString();
+    return this._id.toHexString();
 })
 
 orderSchema.set('toJSON', {
