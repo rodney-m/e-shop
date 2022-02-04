@@ -15,10 +15,11 @@ app.options('*', cors() )
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(authJwt());
+app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 app.use(function(err, req, res, next){
     if(err.name === 'UnauthorizedError'){
         // jwt authentication error
-        return res.status(401).json({message: "The user is not authorized"})
+        return res.status(401).json({message: "The user is not authorized", error: err})
     }
 
     if(err.name === 'ValidationError'){
