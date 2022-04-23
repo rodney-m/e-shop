@@ -15,7 +15,7 @@ app.options('*', cors() )
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(authJwt());
-app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
+app.use('/public/upload', express.static(__dirname + '/public/upload'));
 app.use(function(err, req, res, next){
     if(err.name === 'UnauthorizedError'){
         // jwt authentication error
